@@ -25,6 +25,35 @@ st.markdown('''<style>
 [data-testid="stRadio"] [role="radiogroup"] label span {color:#172b46!important;opacity:1!important}
 [data-testid="stRadio"] [role="radiogroup"] label {background:#ffffff;border:1px solid #d7e2ed;border-radius:9px;padding:9px 12px;margin:4px 0;}
 [data-testid="stRadio"] [role="radiogroup"] label:hover {background:#edf6f9}
+
+/* Contraste consistente nos quatro painéis e nos widgets nativos. */
+html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"],
+[data-testid="stMainBlockContainer"] { background-color: #f6f8fc !important; color: #172b46 !important; }
+[data-testid="stMain"] h1, [data-testid="stMain"] h2,
+[data-testid="stMain"] h3, [data-testid="stMain"] h4,
+[data-testid="stMain"] p, [data-testid="stMain"] label,
+[data-testid="stMain"] [data-testid="stMarkdownContainer"] { color: #172b46 !important; opacity: 1 !important; }
+/* Cabeçalho colorido deve continuar branco. */
+.hero h1, .hero p { color: #ffffff !important; }
+/* Área de digitação: fundo claro, letras escuras, cursor perceptível. */
+[data-testid="stTextArea"] textarea,
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea:focus,
+[data-testid="stTextInput"] input:focus {
+  background: #ffffff !important;
+  color: #172b46 !important;
+  -webkit-text-fill-color: #172b46 !important;
+  caret-color: #172b46 !important;
+  opacity: 1 !important;
+  border: 1px solid #91a5ba !important;
+}
+[data-testid="stTextArea"] textarea::placeholder,
+[data-testid="stTextInput"] input::placeholder { color: #5b6779 !important; -webkit-text-fill-color: #5b6779 !important; }
+[data-testid="stTextArea"] label p,
+[data-testid="stTextInput"] label p,
+[data-testid="stWidgetLabel"] p {color: #172b46 !important; opacity: 1 !important; font-weight: 600 !important;}
+[data-testid="stSidebar"] {background: #f0f5fa !important; color:#172b46 !important;}
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label {color:#172b46 !important;}
 </style>''', unsafe_allow_html=True)
 
 DEFAULT_A = {'titulo':'Chuva forte provoca alagamentos em alguns bairros', 'fonte':'Portal Cidade em Foco (exemplo fictício)', 'data':'15/03/2026', 'autor':'Equipe de reportagem', 'texto':'Após a chuva forte da tarde, ruas de alguns bairros ficaram alagadas. A Defesa Civil informou que recebeu chamados de moradores e orientou a população a evitar áreas inundadas. A reportagem não informa o total de casas atingidas.', 'url':''}
