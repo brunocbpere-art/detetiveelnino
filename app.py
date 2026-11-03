@@ -6,54 +6,73 @@ from pathlib import Path
 import streamlit as st
 
 st.set_page_config(page_title='Detetives da Notícia | 6º ano', page_icon='📰', layout='wide')
-st.markdown('''<style>
-/* A correção principal: legibilidade das alternativas em modo claro e escuro. */
-.stApp {background: #f6f8fc; color:#172b46;}
-.block-container {max-width:1150px;padding-top:1.4rem}
-.hero{background:linear-gradient(115deg,#163b65,#237ca0);padding:25px 30px;border-radius:20px;color:#ffffff;margin-bottom:20px}
-.hero h1{color:#ffffff;margin:0;font-size:2.1rem}.hero p{margin-bottom:0;color:#eaf5ff}
-.panel{background:#ffffff;border-left:5px solid #1e88a8;border-radius:12px;padding:16px 20px;margin:12px 0;box-shadow:0 2px 10px #19385c12;color:#172b46}
-.panel h3,.panel p,.panel b{color:#172b46!important}
-.kicker{font-weight:800;color:#136485;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em}
-.stButton>button[kind=primary]{background:#126687}
-[data-testid="stAppViewContainer"] {color:#172b46;}
-[data-testid="stRadio"] div[role="radiogroup"] {gap:.35rem}
-[data-testid="stRadio"] div[role="radiogroup"] label * {color:#172b46!important;-webkit-text-fill-color:#172b46!important;}
-/* Evita texto branco ou quase branco sobre fundo claro nos controles de rádio. */
-[data-testid="stRadio"] label, [data-testid="stRadio"] label p,
-[data-testid="stRadio"] [data-testid="stMarkdownContainer"] p,
-[data-testid="stRadio"] [role="radiogroup"] label span {color:#172b46!important;opacity:1!important}
-[data-testid="stRadio"] [role="radiogroup"] label {background:#ffffff;border:1px solid #d7e2ed;border-radius:9px;padding:9px 12px;margin:4px 0;}
-[data-testid="stRadio"] [role="radiogroup"] label:hover {background:#edf6f9}
-
-/* Contraste consistente nos quatro painéis e nos widgets nativos. */
-html, body, [data-testid="stAppViewContainer"], [data-testid="stMain"],
+st.markdown(r'''<style>
+/* Paleta clara única para a aplicação e controles BaseWeb do Streamlit. */
+:root { color-scheme: light !important; }
+[data-testid="stAppViewContainer"], [data-testid="stMain"],
 [data-testid="stMainBlockContainer"] { background-color: #f6f8fc !important; color: #172b46 !important; }
-[data-testid="stMain"] h1, [data-testid="stMain"] h2,
-[data-testid="stMain"] h3, [data-testid="stMain"] h4,
-[data-testid="stMain"] p, [data-testid="stMain"] label,
-[data-testid="stMain"] [data-testid="stMarkdownContainer"] { color: #172b46 !important; opacity: 1 !important; }
-/* Cabeçalho colorido deve continuar branco. */
-.hero h1, .hero p { color: #ffffff !important; }
-/* Área de digitação: fundo claro, letras escuras, cursor perceptível. */
-[data-testid="stTextArea"] textarea,
-[data-testid="stTextInput"] input,
-[data-testid="stTextArea"] textarea:focus,
-[data-testid="stTextInput"] input:focus {
-  background: #ffffff !important;
-  color: #172b46 !important;
-  -webkit-text-fill-color: #172b46 !important;
-  caret-color: #172b46 !important;
-  opacity: 1 !important;
-  border: 1px solid #91a5ba !important;
+[data-testid="stSidebar"], [data-testid="stSidebarContent"] {
+  background-color: #edf3f9 !important; color: #172b46 !important;
 }
-[data-testid="stTextArea"] textarea::placeholder,
-[data-testid="stTextInput"] input::placeholder { color: #5b6779 !important; -webkit-text-fill-color: #5b6779 !important; }
-[data-testid="stTextArea"] label p,
-[data-testid="stTextInput"] label p,
-[data-testid="stWidgetLabel"] p {color: #172b46 !important; opacity: 1 !important; font-weight: 600 !important;}
-[data-testid="stSidebar"] {background: #f0f5fa !important; color:#172b46 !important;}
-[data-testid="stSidebar"] p, [data-testid="stSidebar"] label {color:#172b46 !important;}
+.block-container { max-width: 1150px; padding-top: 1.4rem; }
+.hero { background: linear-gradient(115deg,#163b65,#237ca0); padding:25px 30px;
+  border-radius:20px; color:#fff !important; margin-bottom:20px; }
+.hero h1, .hero p { color:#fff !important; }
+.hero h1 { margin:0; font-size:2.1rem; }
+.hero p { margin-bottom:0; }
+.panel { background:#fff; border-left:5px solid #1e88a8; border-radius:12px;
+  padding:16px 20px; margin:12px 0; box-shadow:0 2px 10px #19385c12;
+  color:#172b46 !important; }
+.panel h3, .panel p, .panel b { color:#172b46 !important; }
+.kicker {font-weight:800;color:#136485;font-size:.9rem;text-transform:uppercase;letter-spacing:.06em}
+/* Controles nativos: inclui os wrappers BaseWeb, não só input/textarea internos. */
+[data-testid="stTextInput"] [data-baseweb="input"],
+[data-testid="stTextArea"] [data-baseweb="textarea"],
+[data-testid="stTextInput"] [data-baseweb="base-input"],
+[data-testid="stTextArea"] [data-baseweb="base-input"],
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea {
+  background-color:#fff !important; color:#172b46 !important;
+  -webkit-text-fill-color:#172b46 !important;
+  caret-color:#172b46 !important;
+  opacity:1 !important;
+}
+[data-testid="stTextInput"] input,
+[data-testid="stTextArea"] textarea {
+  border:1px solid #8da3ba !important; border-radius:6px !important;
+}
+[data-testid="stTextInput"] input::placeholder,
+[data-testid="stTextArea"] textarea::placeholder {
+  color:#5b6779 !important; -webkit-text-fill-color:#5b6779 !important; opacity:1 !important;
+}
+/* Texto da interface, incluindo legenda, perguntas, e a barra lateral. */
+[data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] *,
+[data-testid="stRadio"] [data-testid="stMarkdownContainer"] *,
+[data-testid="stSidebar"] [data-testid="stMarkdownContainer"] *,
+[data-testid="stMain"] > div [data-testid="stMarkdownContainer"] > p,
+[data-testid="stMain"] > div [data-testid="stMarkdownContainer"] > strong {
+  color:#172b46 !important; -webkit-text-fill-color:#172b46 !important; opacity:1 !important;
+}
+/* Rádio: botões e texto mantidos legíveis em ambos os estados. */
+[data-testid="stRadio"] div[role="radiogroup"] { gap:.35rem; }
+[data-testid="stRadio"] div[role="radiogroup"] label {
+  background-color:#fff !important; border:1px solid #d0dce8 !important;
+  border-radius:9px !important; padding:9px 12px !important; margin:4px 0 !important;
+}
+[data-testid="stRadio"] div[role="radiogroup"] label:hover {background-color:#eaf4fa !important;}
+[data-testid="stRadio"] div[role="radiogroup"] label * {
+  color:#172b46 !important; -webkit-text-fill-color:#172b46 !important;
+  opacity:1 !important;
+}
+/* Selectboxes usados na comparação da evidência. */
+[data-testid="stSelectbox"] [data-baseweb="select"],
+[data-testid="stSelectbox"] [data-baseweb="select"] > div {
+  background-color:#fff !important; color:#172b46 !important;
+}
+[data-testid="stSelectbox"] [data-baseweb="select"] * {
+  color:#172b46 !important; -webkit-text-fill-color:#172b46 !important;
+}
+[data-testid="stButton"] button[kind="primary"] { background:#126687 !important; color:#fff !important; }
 </style>''', unsafe_allow_html=True)
 
 DEFAULT_A = {'titulo':'Chuva forte provoca alagamentos em alguns bairros', 'fonte':'Portal Cidade em Foco (exemplo fictício)', 'data':'15/03/2026', 'autor':'Equipe de reportagem', 'texto':'Após a chuva forte da tarde, ruas de alguns bairros ficaram alagadas. A Defesa Civil informou que recebeu chamados de moradores e orientou a população a evitar áreas inundadas. A reportagem não informa o total de casas atingidas.', 'url':''}
